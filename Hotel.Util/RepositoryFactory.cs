@@ -7,5 +7,14 @@ namespace Hotel.Util
     public static class RepositoryFactory
     {
         public static ICustomerRepository CustomerRepository { get { return new CustomerRepository(ConfigurationManager.ConnectionStrings["Hotel"].ConnectionString); } }
+
+        public static IOrganisatorRepository OrganisatorRepository
+        {
+            get
+            {
+                return new OrganisatorRepository(ConfigurationManager.ConnectionStrings["Hotel"].ConnectionString);
+            }
+        }
+
     }
 }

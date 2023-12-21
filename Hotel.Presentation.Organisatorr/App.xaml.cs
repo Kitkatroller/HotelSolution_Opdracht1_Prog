@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Hotel.Presentation.Organisator
+namespace Hotel.Presentation.Organisatorr
 {
     /// <summary>
     /// Interaction logic for App.xaml

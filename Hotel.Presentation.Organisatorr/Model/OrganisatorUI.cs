@@ -9,23 +9,21 @@ namespace Hotel.Presentation.Organisator.Model
 {
     public class OrganisatorUI : INotifyPropertyChanged
     {
-        public OrganisatorUI(string name, string email, string address, string phone, int nrOfMembers)
+        public OrganisatorUI(string name, string email, string address, string phone)
         {
             Name = name;
             Email = email;
             Address = address;
             Phone = phone;
-            NrOfMembers = nrOfMembers;
         }
 
-        public OrganisatorUI(int? id, string name, string email, string address, string phone, int nrOfMembers)
+        public OrganisatorUI(int? id, string name, string email, string address, string phone)
         {
             Id = id;
             Name = name;
             Email = email;
             Address = address;
             Phone = phone;
-            NrOfMembers = nrOfMembers;
         }
 
         public int? Id { get; set; }
@@ -36,7 +34,6 @@ namespace Hotel.Presentation.Organisator.Model
         public string Address { get; set; }
         private string _phone;
         public string Phone { get { return _phone; } set { _phone = value; OnPropertyChanged(); } }
-        public int NrOfMembers { get; set; }
         private void OnPropertyChanged(string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
