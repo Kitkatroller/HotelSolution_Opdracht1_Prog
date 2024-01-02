@@ -10,6 +10,6 @@ namespace Hotel.Domain.Interfaces
     public interface IInschrijvingRepository
     {
         int AantalAllIngeschreven(int activiteitenId);
-        void SchrijfNieuweMembersIn(List<Member> membersToParticipate, float cost);
+        void SchrijfNieuweMembersIn(Dictionary<Member, float> memberCosts, int activiteitId);
     }
 }

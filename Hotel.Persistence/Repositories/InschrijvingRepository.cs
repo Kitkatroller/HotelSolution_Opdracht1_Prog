@@ -24,7 +24,7 @@ namespace Hotel.Persistence.Repositories
             return 1;
         }
 
-        public void SchrijfNieuweMembersIn(List<Member> membersToParticipate, float cost)
+        public void SchrijfNieuweMembersIn(Dictionary<Member, float> memberCosts, int activiteitId)
         {
             try
             {
@@ -39,13 +39,17 @@ namespace Hotel.Persistence.Repositories
 
                         try
                         {
-                            foreach (var member in membersToParticipate)
+                            foreach (KeyValuePair<Member, float> memberCostPair in memberCosts)
                             {
+                                // Extract Member and Cost from the KeyValuePair
+                                Member member = memberCostPair.Key;
+                                float cost = memberCostPair.Value;
+
                                 // Insert into Inschrijving
                                 cmd.CommandText = "INSERT INTO Inschrijving (MemberId, ActivityId, TotalPrice) VALUES (@MemberId, @ActivityId, @TotalPrice)";
                                 cmd.Parameters.Clear();
-                                cmd.Parameters.AddWithValue("@MemberId", member.Id);
-                                cmd.Parameters.AddWithValue("@ActivityId", 1);
+                                cmd.Parameters.AddWithValue("@MemberId", member.Id); // Assuming Member has an Id property
+                                cmd.Parameters.AddWithValue("@ActivityId", activiteitId);
                                 cmd.Parameters.AddWithValue("@TotalPrice", cost);
 
                                 cmd.ExecuteNonQuery();
@@ -66,6 +70,7 @@ namespace Hotel.Persistence.Repositories
                 throw new Exception("Database operation failed", ex);
             }
         }
+
 
     }
 }

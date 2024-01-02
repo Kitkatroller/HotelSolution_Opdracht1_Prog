@@ -31,7 +31,9 @@ namespace Hotel.Presentation.Inschrijven
         private List<Activiteit> alleActiviteiten = new List<Activiteit>();
         private ObservableCollection<Member> _chosenMembers = new ObservableCollection<Member>();
 
-        Activiteit selectedActiviteit = new Activiteit();
+        Activiteit selectedActiviteit;
+
+        Dictionary<Member, float> chosenMembersList = new Dictionary<Member, float>();
 
         private int aantalKids = 0, aantalAdults = 0;
 
@@ -59,9 +61,16 @@ namespace Hotel.Presentation.Inschrijven
 
         private void InschrijvenButton_Click(object sender, RoutedEventArgs e)
         {
-            List<Member> chosenMembersList = new List<Member>(_chosenMembers);
-            _inschrijvingManager.SchrijfNieuweMembersIn(chosenMembersList, (aantalKids * selectedActiviteit.ChildPrice + aantalAdults * selectedActiviteit.AdultPrice));
-            MessageBox.Show("Members zijn ingeschreven", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (selectedActiviteit != null)
+            {
+                _inschrijvingManager.SchrijfNieuweMembersIn(chosenMembersList, 1);
+                MessageBox.Show("Members zijn ingeschreven", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Selecteer een activiteit", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            
         }
 
         private void MembersDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -78,11 +87,15 @@ namespace Hotel.Presentation.Inschrijven
 
                     if ((today.Year - selectedMember.Birthday.Year) < 18)
                     {
+                        chosenMembersList.Add(selectedMember, selectedActiviteit.ChildPrice);
+
                         aantalKids++;
                         KinderenTextBox.Text = aantalAdults.ToString();
                     }
                     else
                     {
+                        chosenMembersList.Add(selectedMember, selectedActiviteit.AdultPrice);
+
                         aantalAdults++;
                         VolwassenenTextBox.Text = aantalAdults.ToString();
                     }
@@ -107,11 +120,14 @@ namespace Hotel.Presentation.Inschrijven
 
                     if ((today.Year - selectedMember.Birthday.Year) < 18)
                     {
+                        chosenMembersList.Remove(selectedMember);
                         aantalKids--;
                         KinderenTextBox.Text = aantalAdults.ToString();
                     }
                     else
                     {
+                        chosenMembersList.Remove(selectedMember);
+
                         aantalAdults--;
                         VolwassenenTextBox.Text = aantalAdults.ToString();
                     }
@@ -121,7 +137,8 @@ namespace Hotel.Presentation.Inschrijven
         private void ActiviteitenDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             selectedActiviteit = ActiviteitenDataGrid.SelectedItem as Activiteit;
-            aantalPlaatsenBeschikbaar = selectedActiviteit.AvailablePlaces; //- alleinscrhijvingen
+            aantalPlaatsenBeschikbaar = selectedActiviteit.AvailablePlaces;
+            gekozenActiviteitId.Content = selectedActiviteit.Id.ToString();
         }
     }
 }

@@ -31,11 +31,11 @@ namespace Hotel.Domain.Managers
         }
 
         
-        public void SchrijfNieuweMembersIn(List<Member> membersToParticipate, float cost)
+        public void SchrijfNieuweMembersIn(Dictionary<Member, float> memberCosts, int activiteitId)
         {
             try
             {
-                _inschrijvingRepository.SchrijfNieuweMembersIn(membersToParticipate, cost);
+                _inschrijvingRepository.SchrijfNieuweMembersIn(memberCosts, activiteitId);
             }
             catch (Exception ex)
             {
