@@ -24,6 +24,7 @@ namespace Hotel.Presentation.Organisator
         private ActiviteitenManager activiteitenManager;
         private Activiteit currentActiviteit = new Activiteit();
         private int? _activiteitId;
+        private int? _organisatorId;
 
         public ActiviteitenWindow(int? activiteitId, int? organisatorId)
         {
@@ -31,7 +32,7 @@ namespace Hotel.Presentation.Organisator
             activiteitenManager = new ActiviteitenManager(RepositoryFactory.ActiviteitRepository);
             IdTextBox.IsReadOnly = true;
             _activiteitId = activiteitId;
-
+            _organisatorId = organisatorId;
 
             if (_activiteitId.HasValue)
             {
@@ -86,8 +87,26 @@ namespace Hotel.Presentation.Organisator
             }
             else
             {
+                // Create a new Activiteit instance with details from the text boxes
+                Activiteit newActiviteit = new Activiteit(
+                    DescriptionTextBox.Text,
+                    LocationTextBox.Text,
+                    TimeSpan.Parse(DurationTextBox.Text), // Assuming the DurationTextBox contains a valid TimeSpan string
+                    NameTextBox.Text,
+                    DateTime.Parse(ScheduleTextBox.Text), // Assuming the ScheduleTextBox contains a valid DateTime string
+                    int.Parse(SpotsTextBox.Text),
+                    float.Parse(AdultCostTextBox.Text),
+                    float.Parse(ChildCostTextBox.Text),
+                    float.Parse(DiscountTextBox.Text),
+                    // You need to provide the OrganisatorId for the new activity
+                    // This could be a fixed value, a value from another control, or a value from the current user context
+                    _organisatorId.Value // Replace with actual OrganisatorId source
+                );
 
+                // Call the AddActiviteit method to insert the new activity
+                activiteitenManager.AddActiviteit(newActiviteit);
             }
+            Close();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

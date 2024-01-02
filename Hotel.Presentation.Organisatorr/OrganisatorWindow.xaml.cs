@@ -119,6 +119,7 @@ namespace Hotel.Presentation.Organisator
         {
             ActiviteitenWindow w = new ActiviteitenWindow(null, OrganisatorUI.Id);
             if (w.ShowDialog() == true) ;
+            LoadActiviteiten();
         }
 
         private void MenuItemUpdateActiviteit_Click(object sender, RoutedEventArgs e)
@@ -130,6 +131,7 @@ namespace Hotel.Presentation.Organisator
 
                 ActiviteitenWindow w = new ActiviteitenWindow(toChange.Id, null);
                 if (w.ShowDialog() == true) ;
+                LoadActiviteiten();
             }
         }
     }
