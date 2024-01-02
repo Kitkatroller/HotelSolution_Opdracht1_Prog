@@ -4,6 +4,8 @@ using Hotel.Presentation.Customer.Model;
 using Hotel.Util;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -24,13 +26,36 @@ namespace Hotel.Presentation.Customer
     /// </summary>
     public partial class CustomerWindow : Window
     {
+        private CustomerManager customerManager;
+        public Domain.Model.Customer _customer;
+
+        ObservableCollection<Member> newMembers = new ObservableCollection<Member>();
+
         public CustomerUI CustomerUI { get; set; }
-        public CustomerWindow(CustomerUI customerUI)
+
+        public CustomerWindow(CustomerUI? customerUI)
         {
             InitializeComponent();
+            customerManager = new CustomerManager(RepositoryFactory.CustomerRepository);
+           
             this.CustomerUI = customerUI;
-            if (CustomerUI != null)
-            {
+
+            IdTextBox.IsReadOnly = true;
+
+            MemberDataGrid.ItemsSource = newMembers;
+
+            //If updating existing, fill in current values:
+            if (CustomerUI != null ) {
+                int id = CustomerUI.Id.Value; 
+                _customer = customerManager.GetCustomerById(id);
+
+                foreach (var members in _customer.GetMembers())
+                {
+                    newMembers.Add(members);
+                }
+
+                AddButton.Content = "Update";
+
                 IdTextBox.Text = CustomerUI.Id.ToString();
                 NameTextBox.Text = CustomerUI.Name;
                 EmailTextBox.Text = CustomerUI.Email;
@@ -44,8 +69,6 @@ namespace Hotel.Presentation.Customer
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            CustomerManager manager = new CustomerManager(RepositoryFactory.CustomerRepository);
-
             if (CustomerUI == null)
             {
                 // Create a new Customer object
@@ -53,8 +76,14 @@ namespace Hotel.Presentation.Customer
                 ContactInfo contactInfo = new ContactInfo(EmailTextBox.Text, PhoneTextBox.Text, address);
                 Hotel.Domain.Model.Customer newCustomer = new Hotel.Domain.Model.Customer(NameTextBox.Text, contactInfo);
 
+                //Add members
+                foreach (var member in newMembers)
+                {
+                    newCustomer.AddMember(member);
+                }              
+
                 // Add the new customer using CustomerManager
-                manager.AddCustomer(newCustomer);
+                customerManager.AddCustomer(newCustomer);
 
                 // Update CustomerUI with the new customer's ID if needed
                 CustomerUI = new CustomerUI(newCustomer.Id, NameTextBox.Text, EmailTextBox.Text, address.ToString(), PhoneTextBox.Text, 0);
@@ -66,7 +95,7 @@ namespace Hotel.Presentation.Customer
                 {
                     int id;
                     bool success = int.TryParse(IdTextBox.Text, out id);
-                    var existingCustomer = manager.GetCustomerById(id);
+                    var existingCustomer = customerManager.GetCustomerById(id);
 
                     if (existingCustomer != null)
                     {
@@ -77,8 +106,18 @@ namespace Hotel.Presentation.Customer
                         existingCustomer.Contact.AddressId = existingCustomer.Contact.AddressId;
                         existingCustomer.Contact.Address = new Address(CityTextBox.Text, StreetTextBox.Text, ZipTextBox.Text, HouseNumberTextBox.Text);
 
+                        existingCustomer.ClearMembers();
+                        //Add member
+                        if (newMembers.Count != 0) { 
+                            
+                            foreach (var member in newMembers)
+                            {
+                                existingCustomer.AddMember(member);
+                            }
+                        }
+
                         // Update the customer using CustomerManager
-                        manager.UpdateCustomer(existingCustomer);
+                        customerManager.UpdateCustomer(existingCustomer);
                         CustomerUI = new CustomerUI(existingCustomer.Id, NameTextBox.Text, EmailTextBox.Text, existingCustomer.Contact.Address.ToString(), PhoneTextBox.Text, 0);
                     }
                     else
@@ -95,6 +134,32 @@ namespace Hotel.Presentation.Customer
 
             DialogResult = true;
             Close();
+        }
+
+        //DataGrid MENU for members
+        private void MenuItemAddMember_Click(object sender, RoutedEventArgs e)
+        {
+            MemberWindow w = new MemberWindow();
+
+            // Subscribe to the MemberAdded event
+            w.MemberAdded += MemberWindow_MemberAdded;
+
+            w.ShowDialog();
+        }
+
+        private void MemberWindow_MemberAdded(object sender, Member e)
+        {
+            newMembers.Add(e);
+        }
+
+        private void MenuItemDeleteMember_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedMember = MemberDataGrid.SelectedItem as Member;
+
+            if (selectedMember != null && newMembers.Contains(selectedMember))
+            {
+                newMembers.Remove(selectedMember);
+            }
         }
     }
 }

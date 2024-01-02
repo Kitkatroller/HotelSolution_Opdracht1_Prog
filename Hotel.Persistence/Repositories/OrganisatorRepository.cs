@@ -99,8 +99,6 @@ namespace Hotel.Persistence.Repositories
             }
         }
 
-
-
         public Organisator GetOrganisator(int id)
         {
             try
@@ -188,7 +186,6 @@ namespace Hotel.Persistence.Repositories
             }
         }
 
-
         public void UpdateOrganisator(Organisator organisator)
         {
             try
@@ -251,7 +248,6 @@ namespace Hotel.Persistence.Repositories
             }
         }
 
-
         public void AddOrganisator(Organisator organisator)
         {
             try
@@ -305,6 +301,5 @@ namespace Hotel.Persistence.Repositories
                 throw new OrganisatorRepositoryException("Database operation failed", ex);
             }
         }
-
     }
 }

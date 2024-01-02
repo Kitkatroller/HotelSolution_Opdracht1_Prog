@@ -7,8 +7,10 @@ namespace Hotel.Domain.Interfaces
     {
         void AddCustomer(Customer customer);
         IReadOnlyList<Customer> GetCustomers(string filter);
-        Customer GetCustomer(int id);
+        Customer GetCustomerById(int customerId);
         void UpdateCustomer(Customer customer);
         void SoftDeleteCustomer(int? customerId);
+        List<Member> GetMembersByCustomerId(int? customerId);
+        void AddMemberToCustomer(int customerId, Member member);
     }
 }

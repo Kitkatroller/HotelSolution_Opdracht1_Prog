@@ -28,7 +28,7 @@ namespace Hotel.Presentation.Customer
     {
         private ObservableCollection<CustomerUI> customerUIs=new ObservableCollection<CustomerUI>();
         private CustomerManager customerManager;
-        string conn = @"Data Source=RAZER-LAPTOP-EP\SQLEXPRESS;Initial Catalog=Hotel;Integrated Security=True";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -43,11 +43,13 @@ namespace Hotel.Presentation.Customer
             CustomerDataGrid.ItemsSource = customerUIs;
         }
 
+        //DATAGRID MENU
         private void MenuItemAddCustomer_Click(object sender, RoutedEventArgs e)
         {
             CustomerWindow w = new CustomerWindow(null);
-            if (w.ShowDialog()==true)
+            if (w.ShowDialog() == true)
                 customerUIs.Add(w.CustomerUI);
+            RefreshData();
         }
         private void MenuItemDeleteCustomer_Click(object sender, RoutedEventArgs e)
         {
@@ -69,7 +71,6 @@ namespace Hotel.Presentation.Customer
                 MessageBox.Show("Please select a customer to delete.", "No Customer Selected");
             }
         }
-
         private void MenuItemUpdateCustomer_Click(object sender, RoutedEventArgs e)
         {
             if (CustomerDataGrid.SelectedItem==null) MessageBox.Show("not selected", "update");
@@ -77,7 +78,14 @@ namespace Hotel.Presentation.Customer
             {
                 CustomerWindow w = new CustomerWindow((CustomerUI)CustomerDataGrid.SelectedItem);
                 w.ShowDialog();
+                RefreshData();
             }
+        }
+
+        private void RefreshData()
+        {
+            customerUIs = new ObservableCollection<CustomerUI>(customerManager.GetCustomers(SearchTextBox.Text).Select(x => new CustomerUI(x.Id, x.Name, x.Contact.Email, x.Contact.Address.ToString(), x.Contact.Phone, x.GetMembers().Count)).ToList());
+            CustomerDataGrid.ItemsSource = customerUIs;
         }
     }
 }

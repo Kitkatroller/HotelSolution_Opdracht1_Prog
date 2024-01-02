@@ -37,7 +37,14 @@
         <TextBox Grid.Row="2" Grid.Column="3" Name="StreetTextBox" Margin="5" VerticalAlignment="Center" />
         <TextBox Grid.Row="3" Grid.Column="1" Name="PhoneTextBox" Margin="5" VerticalAlignment="Center" />
         <TextBox Grid.Row="3" Grid.Column="3" Name="HouseNumberTextBox" Margin="5" VerticalAlignment="Center" />
-        <DataGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Margin="5" Name="MemberDataGrid"/>
+        <DataGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Margin="5" Name="MemberDataGrid">
+        <DataGrid.ContextMenu>
+            <ContextMenu>
+                    <MenuItem Header="Add" Click="MenuItemAddMember_Click"></MenuItem>
+                    <MenuItem Header="Delete" Click="MenuItemDeleteMember_Click"></MenuItem>                    
+                </ContextMenu>
+        </DataGrid.ContextMenu>
+        </DataGrid>
         <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Name="AddButton" Click="AddButton_Click" Content="Add"/>
         <Button Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" Margin="5" Name="CancelButton" Click="CancelButton_Click" Content="Cancel"/>
     </Grid>

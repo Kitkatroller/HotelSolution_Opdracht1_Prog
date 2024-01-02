@@ -29,16 +29,32 @@ namespace Hotel.Domain.Model
             AddressId = addressId;
         }
 
-        public string Email { get { return _email; } set { if (string.IsNullOrWhiteSpace(value)) throw new CustomerException("ci"); _email = value; } }
-       
-        public string Phone {
-            get { return _phone; }
-            set { if (string.IsNullOrWhiteSpace(value)) throw new CustomerException("cin"); _phone = value; } 
+        public string Email
+        {
+            get => _email;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value) || !value.Contains("@"))
+                    throw new CustomerException("Email must contain the @ character.");
+                _email = value;
+            }
         }
-        
-        public Address Address {
-            get { return _address; }
-            set { if (value==null) throw new CustomerException("cin"); _address = value; }
+
+        public string Phone
+        {
+            get => _phone;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new CustomerException("Phone number cannot be empty.");
+                _phone = value;
+            }
+        }
+
+        public Address Address
+        {
+            get => _address;
+            set => _address = value ?? throw new CustomerException("Address cannot be null.");
         }
     }
 }

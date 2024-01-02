@@ -70,7 +70,31 @@ namespace Hotel.Domain.Managers
         {
             try
             {
-                return _customerRepository.GetCustomer(customerId);
+                return _customerRepository.GetCustomerById(customerId);
+            }
+            catch (Exception ex)
+            {
+                throw new CustomerManagerException("GetCustomerById", ex);
+            }
+        }
+
+        public List<Member> GetMembersByCustomerId(int? customerId)
+        {
+            try
+            {
+                return _customerRepository.GetMembersByCustomerId(customerId);
+            }
+            catch (Exception ex)
+            {
+                throw new CustomerManagerException("GetCustomerById", ex);
+            }
+        }
+
+        public void AddMemberToCustomer(int customerId, Member member)
+        {
+            try
+            {
+                _customerRepository.AddMemberToCustomer(customerId, member);
             }
             catch (Exception ex)
             {

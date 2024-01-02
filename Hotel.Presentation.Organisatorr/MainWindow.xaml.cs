@@ -57,11 +57,5 @@ namespace Hotel.Presentation.Organisator
                 w.ShowDialog();
             }
         }
-
-        // Assuming you have a similar delete functionality for Organisator
-        //private void MenuItemDeleteOrganisator_Click(object sender, RoutedEventArgs e)
-        //{
-        //    // Implement delete functionality similar to Customer
-        //}
     }
 }
