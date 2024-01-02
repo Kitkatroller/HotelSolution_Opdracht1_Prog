@@ -6,7 +6,57 @@
         xmlns:local="clr-namespace:Hotel.Presentation.Inschrijven"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
+        <!-- DataGrid for selecting an activity -->
+        <DataGrid Grid.Column="0" Grid.Row="0" Grid.RowSpan="6" Margin="5" Name="ActiviteitenDataGrid" 
+                  AutoGenerateColumns="True" 
+                  IsReadOnly="True" 
+                  SelectionMode="Single"
+                  MouseDoubleClick="ActiviteitenDataGrid_MouseDoubleClick"/>
+
+        <!-- DataGrid for selecting a member -->
+        <DataGrid Grid.Column="1" Grid.Row="0" Margin="5" Name="MembersDataGrid" 
+                  AutoGenerateColumns="True" 
+                  IsReadOnly="True" 
+                  SelectionMode="Single"
+                  MouseDoubleClick="MembersDataGrid_MouseDoubleClick"/>
+
+
+        <!-- DataGrid for displaying chosen members -->
+            <DataGrid Grid.Column="1" Grid.Row="1" Margin="5" Name="ChosenMembersDataGrid" 
+                  AutoGenerateColumns="True" 
+                  IsReadOnly="True" 
+                  SelectionMode="Single"
+                  MouseDoubleClick="ChosenMembersDataGrid_MouseDoubleClick"/>
+
+            <!-- Input for number of adults and children -->
+        <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal" Margin="5">
+            <Label Content="Aantal volwassenen:"/>
+            <TextBox Width="50" Name="VolwassenenTextBox" Margin="5" IsReadOnly="True"/>
+            <Label Content="Aantal kinderen:"/>
+            <TextBox Width="50" Name="KinderenTextBox" Margin="5" IsReadOnly="True"/>
+        </StackPanel>
+
+        <!-- Button to calculate total cost -->
+        <Button Grid.Column="0" Grid.Row="3" Content="Bereken Kosten" Margin="5" Click="BerekenKostenButton_Click"/>
+
+        <!-- TextBlock to display calculated cost -->
+        <TextBlock Grid.Column="0" Grid.Row="4" Name="KostenTextBlock" Margin="5" TextWrapping="Wrap"/>
+
+        <!-- Button to submit the registration -->
+        <Button Grid.Column="0" Grid.Row="5" Content="Inschrijven" Margin="5" Click="InschrijvenButton_Click"/>
     </Grid>
 </Window>

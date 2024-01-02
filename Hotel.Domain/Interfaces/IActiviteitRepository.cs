@@ -8,6 +8,7 @@ namespace Hotel.Domain.Interfaces
 {
     public interface IActiviteitRepository
     {
+        List<Activiteit> GetAllActiviteiten();
         Activiteit GetActiviteit(int id);
         void AddActiviteit(Activiteit activiteit);
         void UpdateActiviteit(Activiteit activiteit);

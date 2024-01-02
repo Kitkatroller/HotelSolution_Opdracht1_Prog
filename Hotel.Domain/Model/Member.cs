@@ -10,9 +10,17 @@ namespace Hotel.Domain.Model
             Birthday = birthday;
         }
 
+        public Member(int id, string name, DateOnly birthday)
+        {
+            Id = id;
+            Name = name;
+            Birthday = birthday;
+        }
+
         public Member() { }
 
         private string _name;
+        public int Id { get; set; }
         public string Name { get { return _name; } set { if (string.IsNullOrWhiteSpace(value)) throw new CustomerException("member"); _name = value; } }
         private DateOnly _birthday;
         public DateOnly Birthday

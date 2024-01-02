@@ -57,16 +57,13 @@ CREATE TABLE Activiteit (
     FOREIGN KEY (OrganisatorId) REFERENCES Organisator(Id)
 );
 
--- Create Inschrijving Table
 CREATE TABLE Inschrijving (
     Id INT IDENTITY PRIMARY KEY,
-    CustomerId INT,
-    ActivityId INT,
-    NumberOfAdults INT NOT NULL,
-    NumberOfChildren INT NOT NULL,
+    MemberId INT,
+	ActivityId INT,
     TotalPrice FLOAT NOT NULL,
-    FOREIGN KEY (CustomerId) REFERENCES Klant(Id),
-    FOREIGN KEY (ActivityId) REFERENCES Aktiviteit(Id)
+    FOREIGN KEY (MemberId) REFERENCES Member(Id),
+    FOREIGN KEY (ActivityId) REFERENCES Activiteit(Id)
 );
 
 

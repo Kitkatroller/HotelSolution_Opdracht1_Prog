@@ -292,7 +292,7 @@ namespace Hotel.Persistence.Repositories
         {
             var members = new List<Member>();
             var sql = @"
-        SELECT Name, Birthday
+        SELECT id, Name, Birthday
         FROM Member
         WHERE KlantId = @customerId";
 
@@ -306,6 +306,7 @@ namespace Hotel.Persistence.Repositories
                     {
                         var member = new Member
                         {
+                            Id = reader.GetInt32(reader.GetOrdinal("id")),
                             Name = reader.GetString(reader.GetOrdinal("Name")),
                             Birthday = DateOnly.FromDateTime(reader.GetDateTime(reader.GetOrdinal("Birthday")))
                         };
@@ -412,7 +413,7 @@ namespace Hotel.Persistence.Repositories
                 {
                     conn.Open();
                     string sql = @"
-                    SELECT Name, Birthday 
+                    SELECT id, Name, Birthday 
                     FROM Member 
                     WHERE KlantId = @klantId";
 
@@ -425,6 +426,7 @@ namespace Hotel.Persistence.Repositories
                             while (reader.Read())
                             {
                                 Member member = new Member(
+                                    reader.GetInt32(reader.GetOrdinal("id")),
                                     reader.GetString(reader.GetOrdinal("Name")),
                                     DateOnly.FromDateTime(reader.GetDateTime(reader.GetOrdinal("Birthday")))
                                 );
@@ -468,7 +470,5 @@ namespace Hotel.Persistence.Repositories
                 throw new Exception("Error adding member to customer", ex);
             }
         }
-
-
     }
 }

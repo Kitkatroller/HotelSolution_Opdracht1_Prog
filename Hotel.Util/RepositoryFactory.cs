@@ -24,5 +24,13 @@ namespace Hotel.Util
             }
         }
 
+        public static IInschrijvingRepository InschrijvingRepository
+        {
+            get
+            {
+                return new InschrijvingRepository(ConfigurationManager.ConnectionStrings["Hotel"].ConnectionString);
+            }
+        }
+
     }
 }

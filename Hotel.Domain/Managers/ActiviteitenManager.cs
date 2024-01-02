@@ -54,6 +54,18 @@ namespace Hotel.Domain.Managers
             }
         }
 
+        public List<Activiteit> GetAllActiviteiten()
+        {
+            try
+            {
+                return _activiteitenRepository.GetAllActiviteiten();
+            }
+            catch (Exception ex)
+            {
+                throw new CustomerManagerException("GetAllActiviteit", ex);
+            }
+        }
+
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using Hotel.Domain.Interfaces;
+﻿using Hotel.Domain.Exceptions;
+using Hotel.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -145,6 +146,50 @@ WHERE Id = @Id";
             }
         }
 
+        public List<Activiteit> GetAllActiviteiten()
+        {
+            List<Activiteit> activiteiten = new List<Activiteit>();
+
+            try
+            {
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    string query = "SELECT * FROM Activiteit";
+
+                    using (var cmd = new SqlCommand(query, conn))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Activiteit activiteit = new Activiteit(
+                                    reader.GetInt32(reader.GetOrdinal("Id")),
+                                    reader.GetString(reader.GetOrdinal("Description")),
+                                    reader.GetString(reader.GetOrdinal("Location")),
+                                    (TimeSpan)reader["Duration"],
+                                    reader.GetString(reader.GetOrdinal("Name")),
+                                    reader.GetDateTime(reader.GetOrdinal("Date")),
+                                    reader.GetInt32(reader.GetOrdinal("AvailablePlaces")),
+                                    (float)reader.GetDouble(reader.GetOrdinal("AdultPrice")),
+                                    (float)reader.GetDouble(reader.GetOrdinal("ChildPrice")),
+                                    (float)reader.GetDouble(reader.GetOrdinal("Discount")),
+                                    reader.GetInt32(reader.GetOrdinal("OrganisatorId"))
+                                );
+                                activiteiten.Add(activiteit);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving all activiteiten", ex);
+            }
+
+            return activiteiten;
+        }
 
     }
 }
