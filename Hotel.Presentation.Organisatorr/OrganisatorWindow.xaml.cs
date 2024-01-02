@@ -20,6 +20,7 @@ namespace Hotel.Presentation.Organisator
             InitializeComponent();
             this.OrganisatorUI = organisatorUI;
             organisatorManager = new OrganisatorManager(RepositoryFactory.OrganisatorRepository);
+            IdTextBox.IsReadOnly = true;
 
             LoadOrganisatorDetails();
             LoadActiviteiten();
@@ -33,7 +34,8 @@ namespace Hotel.Presentation.Organisator
                 NameTextBox.Text = OrganisatorUI.Name;
                 EmailTextBox.Text = OrganisatorUI.Email;
                 PhoneTextBox.Text = OrganisatorUI.Phone;
-                // Populate other fields if necessary
+
+                AddButton.Content = "Update";
             }
         }
 
@@ -115,12 +117,20 @@ namespace Hotel.Presentation.Organisator
 
         private void MenuItemAddActiviteit_Click(object sender, RoutedEventArgs e)
         {
-           
+            ActiviteitenWindow w = new ActiviteitenWindow(null, OrganisatorUI.Id);
+            if (w.ShowDialog() == true) ;
         }
 
         private void MenuItemUpdateActiviteit_Click(object sender, RoutedEventArgs e)
         {
-            
+            if (ActiviteitenDataGrid.SelectedItem == null) MessageBox.Show("not selected", "update");
+            else
+            {
+                ActiviteitUI toChange = (ActiviteitUI)ActiviteitenDataGrid.SelectedItem;
+
+                ActiviteitenWindow w = new ActiviteitenWindow(toChange.Id, null);
+                if (w.ShowDialog() == true) ;
+            }
         }
     }
 }

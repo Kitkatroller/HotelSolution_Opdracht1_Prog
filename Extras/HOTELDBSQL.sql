@@ -41,8 +41,8 @@ CREATE TABLE Member (
     FOREIGN KEY (KlantId) REFERENCES Klant(Id)
 );
 
--- Create Aktiviteit Table
-CREATE TABLE Aktiviteit (
+-- Create Activiteit Table
+CREATE TABLE Activiteit (
     Id INT IDENTITY PRIMARY KEY,
     Description NVARCHAR(MAX) NOT NULL,
     Location NVARCHAR(255) NOT NULL,

@@ -24,11 +24,11 @@ namespace Hotel.Persistence.Repositories
             try
             {
                 List<Organisator> organisators = new List<Organisator>();
-                string sql = @"SELECT o.Id, o.Name, ci.Email, ci.Phone, a.City, a.Street, a.PostalCode, a.HouseNumber
-                       FROM Organisator o
-                       INNER JOIN ContactInfo ci ON o.ContactInfoId = ci.Id
-                       INNER JOIN Address a ON ci.AddressId = a.Id
-                       WHERE o.Name LIKE @filter OR ci.Email LIKE @filter";
+                string sql = @"SELECT o.Id, o.Name, o.ContactInfoId, ci.Email, ci.Phone, ci.AddressId, a.City, a.Street, a.PostalCode, a.HouseNumber
+               FROM Organisator o
+               INNER JOIN ContactInfo ci ON o.ContactInfoId = ci.Id
+               INNER JOIN Address a ON ci.AddressId = a.Id
+               WHERE o.Name LIKE @filter OR ci.Email LIKE @filter";
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
@@ -43,9 +43,11 @@ namespace Hotel.Persistence.Repositories
                                 Organisator organisator = new Organisator(
                                     reader.GetInt32(reader.GetOrdinal("Id")),
                                     reader.GetString(reader.GetOrdinal("Name")),
+                                     reader.GetInt32(reader.GetOrdinal("ContactInfoId")),
                                     new ContactInfo(
                                         reader.GetString(reader.GetOrdinal("Email")),
                                         reader.GetString(reader.GetOrdinal("Phone")),
+                                        reader.GetInt32(reader.GetOrdinal("AddressId")),
                                         new Address(
                                             reader.GetString(reader.GetOrdinal("City")),
                                             reader.GetString(reader.GetOrdinal("Street")),
@@ -58,37 +60,6 @@ namespace Hotel.Persistence.Repositories
                             }
                         }
                     }
-
-                    //// Retrieve Activiteiten for each Organisator
-                    //foreach (var organisator in organisators)
-                    //{
-                    //    string activiteitenSql = @"SELECT * FROM Activiteit WHERE OrganisatorId = @organisatorId";
-                    //    using (SqlCommand activiteitenCmd = new SqlCommand(activiteitenSql, conn))
-                    //    {
-                    //        activiteitenCmd.Parameters.AddWithValue("@organisatorId", organisator.Id);
-                    //        using (SqlDataReader activiteitenReader = activiteitenCmd.ExecuteReader())
-                    //        {
-                    //            while (activiteitenReader.Read())
-                    //            {
-                    //                Activiteit activiteit = new Activiteit(
-                    //                    activiteitenReader.GetInt32(activiteitenReader.GetOrdinal("Id")),
-                    //                    activiteitenReader.GetString(activiteitenReader.GetOrdinal("Description")),
-                    //                    activiteitenReader.GetString(activiteitenReader.GetOrdinal("Location")),
-                    //                    activiteitenReader.GetTimeSpan(activiteitenReader.GetOrdinal("Duration")), // Assuming Duration is a TimeSpan
-                    //                    activiteitenReader.GetString(activiteitenReader.GetOrdinal("Name")),
-                    //                    activiteitenReader.GetDateTime(activiteitenReader.GetOrdinal("Date")),
-                    //                    activiteitenReader.GetInt32(activiteitenReader.GetOrdinal("AvailablePlaces")),
-                    //                    (float)activiteitenReader.GetDouble(activiteitenReader.GetOrdinal("AdultPrice")),
-                    //                    (float)activiteitenReader.GetDouble(activiteitenReader.GetOrdinal("ChildPrice")),
-                    //                    (float)activiteitenReader.GetDouble(activiteitenReader.GetOrdinal("Discount")),
-                    //                    organisator.Id
-                    //                );
-                    //                organisator.AddActiviteit(activiteit);
-                    //            }
-                    //        }
-                    //    }
-                    //}
-
                 }
 
                 return organisators;
@@ -111,11 +82,12 @@ namespace Hotel.Persistence.Repositories
 
                     // Query to get Organisator details
                     string sql = @"
-                SELECT o.Id, o.Name, ci.Email, ci.Phone, a.City, a.Street, a.PostalCode, a.HouseNumber
-                FROM Organisator o
-                INNER JOIN ContactInfo ci ON o.ContactInfoId = ci.Id
-                INNER JOIN Address a ON ci.AddressId = a.Id
-                WHERE o.Id = @organisatorId";
+                    SELECT o.Id, o.Name, o.ContactInfoId, ci.Email, ci.Phone, ci.AddressId, a.City, a.Street, a.PostalCode, a.HouseNumber
+                    FROM Organisator o
+                    INNER JOIN ContactInfo ci ON o.ContactInfoId = ci.Id
+                    INNER JOIN Address a ON ci.AddressId = a.Id
+                    WHERE o.Id = @organisatorId";
+
 
                     using (var cmd = new SqlCommand(sql, conn))
                     {
@@ -128,9 +100,11 @@ namespace Hotel.Persistence.Repositories
                                 organisator = new Organisator(
                                     reader.GetInt32(reader.GetOrdinal("Id")),
                                     reader.GetString(reader.GetOrdinal("Name")),
+                                    reader.GetInt32(reader.GetOrdinal("ContactInfoId")),
                                     new ContactInfo(
                                         reader.GetString(reader.GetOrdinal("Email")),
                                         reader.GetString(reader.GetOrdinal("Phone")),
+                                         reader.GetInt32(reader.GetOrdinal("AddressId")),
                                         new Address(
                                             reader.GetString(reader.GetOrdinal("City")),
                                             reader.GetString(reader.GetOrdinal("Street")),
@@ -147,7 +121,7 @@ namespace Hotel.Persistence.Repositories
                     if (organisator != null)
                     {
                         string activiteitenSql = @"
-                    SELECT * FROM Activiteit WHERE OrganisatorId = @organisatorId";
+                        SELECT * FROM Activiteit WHERE OrganisatorId = @organisatorId";
 
                         using (var activiteitenCmd = new SqlCommand(activiteitenSql, conn))
                         {
@@ -161,7 +135,7 @@ namespace Hotel.Persistence.Repositories
                                         activiteitenReader.GetInt32(activiteitenReader.GetOrdinal("Id")),
                                         activiteitenReader.GetString(activiteitenReader.GetOrdinal("Description")),
                                         activiteitenReader.GetString(activiteitenReader.GetOrdinal("Location")),
-                                        (TimeSpan)activiteitenReader["Duration"], // Directly cast to TimeSpan
+                                        (TimeSpan)activiteitenReader["Duration"], 
                                         activiteitenReader.GetString(activiteitenReader.GetOrdinal("Name")),
                                         activiteitenReader.GetDateTime(activiteitenReader.GetOrdinal("Date")),
                                         activiteitenReader.GetInt32(activiteitenReader.GetOrdinal("AvailablePlaces")),
@@ -186,6 +160,55 @@ namespace Hotel.Persistence.Repositories
             }
         }
 
+        public List<Activiteit> GetActiviteitenByOrganisatorId(int organisatorId)
+        {
+            List<Activiteit> activiteiten = new List<Activiteit>();
+
+            try
+            {
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    string activiteitenSql = @"
+            SELECT * FROM Activiteit WHERE OrganisatorId = @organisatorId";
+
+                    using (var activiteitenCmd = new SqlCommand(activiteitenSql, conn))
+                    {
+                        activiteitenCmd.Parameters.AddWithValue("@organisatorId", organisatorId);
+
+                        using (var activiteitenReader = activiteitenCmd.ExecuteReader())
+                        {
+                            while (activiteitenReader.Read())
+                            {
+                                Activiteit activiteit = new Activiteit(
+                                    activiteitenReader.GetInt32(activiteitenReader.GetOrdinal("Id")),
+                                    activiteitenReader.GetString(activiteitenReader.GetOrdinal("Description")),
+                                    activiteitenReader.GetString(activiteitenReader.GetOrdinal("Location")),
+                                    (TimeSpan)activiteitenReader["Duration"],
+                                    activiteitenReader.GetString(activiteitenReader.GetOrdinal("Name")),
+                                    activiteitenReader.GetDateTime(activiteitenReader.GetOrdinal("Date")),
+                                    activiteitenReader.GetInt32(activiteitenReader.GetOrdinal("AvailablePlaces")),
+                                    (float)activiteitenReader.GetDouble(activiteitenReader.GetOrdinal("AdultPrice")),
+                                    (float)activiteitenReader.GetDouble(activiteitenReader.GetOrdinal("ChildPrice")),
+                                    (float)activiteitenReader.GetDouble(activiteitenReader.GetOrdinal("Discount")),
+                                    organisatorId
+                                );
+
+                                activiteiten.Add(activiteit);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving activiteiten", ex);
+            }
+
+            return activiteiten;
+        }
+
         public void UpdateOrganisator(Organisator organisator)
         {
             try
@@ -208,7 +231,7 @@ namespace Hotel.Persistence.Repositories
                             cmd.ExecuteNonQuery();
 
                             // Assuming ContactInfoId is stored in Organisator entity
-                            int contactInfoId = organisator.ContactInfoId; // Or retrieve it as needed
+                            int contactInfoId = organisator.ContactInfoId;
 
                             // Update ContactInfo table
                             cmd.CommandText = "UPDATE ContactInfo SET Email = @email, Phone = @phone WHERE Id = @contactInfoId";
@@ -219,7 +242,7 @@ namespace Hotel.Persistence.Repositories
                             cmd.ExecuteNonQuery();
 
                             // Assuming AddressId is stored in ContactInfo entity
-                            int addressId = organisator.Contact.AddressId; // Or retrieve it as needed
+                            int addressId = organisator.Contact.AddressId;
 
                             // Update Address table
                             cmd.CommandText = "UPDATE Address SET City = @city, Street = @street, PostalCode = @postalCode, HouseNumber = @houseNumber WHERE Id = @addressId";

@@ -16,5 +16,13 @@ namespace Hotel.Util
             }
         }
 
+        public static IActiviteitRepository ActiviteitRepository
+        {
+            get
+            {
+                return new ActiviteitRepository(ConfigurationManager.ConnectionStrings["Hotel"].ConnectionString);
+            }
+        }
+
     }
 }

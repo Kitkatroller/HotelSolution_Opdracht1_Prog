@@ -25,7 +25,6 @@ namespace Hotel.Presentation.Organisator
     {
         private ObservableCollection<OrganisatorUI> organisatorUIs = new ObservableCollection<OrganisatorUI>();
         private OrganisatorManager organisatorManager;
-        string conn = @"Data Source=RAZER-LAPTOP-EP\SQLEXPRESS;Initial Catalog=Hotel;Integrated Security=True";
 
         public MainWindow()
         {
@@ -46,6 +45,12 @@ namespace Hotel.Presentation.Organisator
             OrganisatorWindow w = new OrganisatorWindow(null);
             if (w.ShowDialog() == true)
                 organisatorUIs.Add(w.OrganisatorUI);
+
+
+
+            organisatorUIs = new ObservableCollection<OrganisatorUI>(organisatorManager.GetOrganisator(SearchTextBox.Text).Select(x => new OrganisatorUI(x.Id, x.Name, x.Contact.Email, x.Contact.Address.ToString(), x.Contact.Phone)).ToList());
+            OrganisatorDataGrid.ItemsSource = organisatorUIs;
+
         }
 
         private void MenuItemUpdateOrganisator_Click(object sender, RoutedEventArgs e)
@@ -56,6 +61,10 @@ namespace Hotel.Presentation.Organisator
                 OrganisatorWindow w = new OrganisatorWindow((OrganisatorUI)OrganisatorDataGrid.SelectedItem);
                 w.ShowDialog();
             }
+
+
+            organisatorUIs = new ObservableCollection<OrganisatorUI>(organisatorManager.GetOrganisator(SearchTextBox.Text).Select(x => new OrganisatorUI(x.Id, x.Name, x.Contact.Email, x.Contact.Address.ToString(), x.Contact.Phone)).ToList());
+            OrganisatorDataGrid.ItemsSource = organisatorUIs;
         }
     }
 }

@@ -318,7 +318,6 @@ namespace Hotel.Persistence.Repositories
             }
         }
 
-
         public void SoftDeleteCustomer(int? customerId)
         {
             try
@@ -383,7 +382,7 @@ namespace Hotel.Persistence.Repositories
                                 cmd.Parameters.Clear();
                                 cmd.Parameters.AddWithValue("@memberName", member.Name);
                                 cmd.Parameters.AddWithValue("@birthday", member.Birthday.ToDateTime(TimeOnly.MinValue));
-                                cmd.Parameters.AddWithValue("@klantId", customerId); // Assuming this sets the correct KlantId
+                                cmd.Parameters.AddWithValue("@klantId", customerId);
                                 cmd.ExecuteNonQuery();
                             }
 
