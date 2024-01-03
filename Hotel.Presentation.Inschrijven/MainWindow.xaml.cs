@@ -48,10 +48,6 @@ namespace Hotel.Presentation.Inschrijven
 
             alleActiviteiten = _activiteitenManager.GetAllActiviteiten();
             ActiviteitenDataGrid.ItemsSource = alleActiviteiten;
-
-            // Assuming GetMembersByCustomerId returns an ObservableCollection<Member>
-            MembersDataGrid.ItemsSource = _customerManager.GetMembersByCustomerId(1105);
-            ChosenMembersDataGrid.ItemsSource = _chosenMembers;
         }
 
         private void BerekenKostenButton_Click(object sender, RoutedEventArgs e)
@@ -139,6 +135,9 @@ namespace Hotel.Presentation.Inschrijven
             selectedActiviteit = ActiviteitenDataGrid.SelectedItem as Activiteit;
             aantalPlaatsenBeschikbaar = selectedActiviteit.AvailablePlaces;
             gekozenActiviteitId.Content = selectedActiviteit.Id.ToString();
+
+            MembersDataGrid.ItemsSource = _customerManager.GetMembersByCustomerId(1105);
+            ChosenMembersDataGrid.ItemsSource = _chosenMembers;
         }
     }
 }
