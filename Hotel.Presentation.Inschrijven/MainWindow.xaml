@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
 
         <!-- DataGrid for selecting an activity -->
-        <DataGrid Grid.Column="0" Grid.Row="0" Grid.RowSpan="6" Margin="5" Name="ActiviteitenDataGrid" 
+        <DataGrid Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="5,5,5,9" Name="ActiviteitenDataGrid" 
                   AutoGenerateColumns="True" 
                   IsReadOnly="True" 
                   SelectionMode="Single"

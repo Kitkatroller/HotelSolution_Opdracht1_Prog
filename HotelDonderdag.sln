@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hotel.Util", "Hotel.Util\Ho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hotel.Presentation.Organisator", "Hotel.Presentation.Organisatorr\Hotel.Presentation.Organisator.csproj", "{5D59487D-A32F-44FD-89A5-17D5BD105E6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel.Presentation.Inschrijven", "Hotel.Presentation.Inschrijven\Hotel.Presentation.Inschrijven.csproj", "{E15DC83F-68FD-40AE-999D-8FACD0CF1CE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hotel.Presentation.Inschrijven", "Hotel.Presentation.Inschrijven\Hotel.Presentation.Inschrijven.csproj", "{E15DC83F-68FD-40AE-999D-8FACD0CF1CE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

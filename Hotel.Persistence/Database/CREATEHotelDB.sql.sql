@@ -29,7 +29,8 @@ CREATE TABLE Klant (
     Id INT IDENTITY PRIMARY KEY,
     Name NVARCHAR(255) NOT NULL,
     ContactInfoId INT,
-    FOREIGN KEY (ContactInfoId) REFERENCES ContactInfo(Id)
+    FOREIGN KEY (ContactInfoId) REFERENCES ContactInfo(Id),
+    IsActive BIT NOT NULL DEFAULT 1
 );
 
 -- Create Member Table
@@ -65,8 +66,3 @@ CREATE TABLE Inschrijving (
     FOREIGN KEY (MemberId) REFERENCES Member(Id),
     FOREIGN KEY (ActivityId) REFERENCES Activiteit(Id)
 );
-
-
-ALTER TABLE Klant
-ADD IsActive BIT NOT NULL DEFAULT 1;
-

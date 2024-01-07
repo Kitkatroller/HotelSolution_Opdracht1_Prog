@@ -117,9 +117,13 @@ namespace Hotel.Presentation.Organisator
 
         private void MenuItemAddActiviteit_Click(object sender, RoutedEventArgs e)
         {
-            ActiviteitenWindow w = new ActiviteitenWindow(null, OrganisatorUI.Id);
-            if (w.ShowDialog() == true) ;
-            LoadActiviteiten();
+            if (OrganisatorUI == null) MessageBox.Show("You must first create the organisation before you can add any activities.", "add");
+            else
+            {           
+                ActiviteitenWindow w = new ActiviteitenWindow(null, OrganisatorUI.Id);
+                if (w.ShowDialog() == true) ;
+                LoadActiviteiten();
+            }
         }
 
         private void MenuItemUpdateActiviteit_Click(object sender, RoutedEventArgs e)

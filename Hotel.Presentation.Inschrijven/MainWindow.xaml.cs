@@ -136,7 +136,7 @@ namespace Hotel.Presentation.Inschrijven
             aantalPlaatsenBeschikbaar = selectedActiviteit.AvailablePlaces;
             gekozenActiviteitId.Content = selectedActiviteit.Id.ToString();
 
-            MembersDataGrid.ItemsSource = _customerManager.GetMembersByCustomerId(1105);
+            MembersDataGrid.ItemsSource = _customerManager.GetMembersByCustomerId(1);
             ChosenMembersDataGrid.ItemsSource = _chosenMembers;
         }
     }

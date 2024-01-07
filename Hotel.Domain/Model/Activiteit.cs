@@ -39,11 +39,9 @@
         AvailablePlaces = availablePlaces;
     }
 
-    // Constructor without ID (for new records)
+    // Constructor
     public Activiteit(string description, string location, TimeSpan duration, string name, DateTime date, int availablePlaces, float adultPrice, float childPrice, float discount, int organisatorId)
         : this(0, description, location, duration, name, date, availablePlaces, adultPrice, childPrice, discount, organisatorId)
     {
     }
-
-    // Additional methods or logic related to Activiteit
 }
